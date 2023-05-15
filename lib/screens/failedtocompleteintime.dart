@@ -37,14 +37,14 @@ class _FailedToDoScreenState extends State<FailedToDoScreen> {
             ),
           ],
           title: const Center(
-            child: Text('What To Do?',
+            child: Text('Failed ToDos',
                 style: TextStyle(fontSize: 24, fontWeight: FontWeight.w700)),
           )),
       drawer: const DrawerForCompletedTask(),
       body: ListView.builder(
-        itemCount: todoProvider.failedtodos.length,
+        itemCount: todoProvider.ftodos.length,
         itemBuilder: (context, index) {
-          final failedtodos = todoProvider.failedtodos;
+          final failedtodos = todoProvider.ftodos;
           failedtodos.sort((a, b) => a.date
               .difference(DateTime.now())
               .compareTo(b.date.difference(DateTime.now())));
@@ -108,7 +108,7 @@ class _FailedToDoScreenState extends State<FailedToDoScreen> {
                               child: Consumer<TodoProvider>(
                                 builder: (context, todoProvider, child) {
                                   final selectedDate =
-                                      todoProvider.failedtodos[index].date;
+                                      todoProvider.ftodos[index].date;
                                   final now = DateTime.now();
                                   final timeRemaining =
                                       selectedDate.difference(now);

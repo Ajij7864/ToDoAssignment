@@ -50,114 +50,120 @@ class _MainUiState extends State<MainUi> {
               .compareTo(b.date.difference(DateTime.now())));
           final todo = todos[index];
 
-          return Dismissible(
-            key: ValueKey(todo.id),
-            direction: DismissDirection.endToStart,
-            onDismissed: (direction) {
-              if (direction == DismissDirection.endToStart) {
-                todoProvider.deleteHandler(todo.id);
-              }
-            },
-            child: GestureDetector(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => TodoDetailScreen(todo: todo),
-                  ),
-                );
+          return Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Dismissible(
+              key: ValueKey(todo.id),
+              direction: DismissDirection.endToStart,
+              onDismissed: (direction) {
+                if (direction == DismissDirection.endToStart) {
+                  todoProvider.deleteHandler(todo.id);
+                }
               },
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(15),
-                child: Container(
-                  padding: const EdgeInsets.all(14),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Expanded(
-                        flex: 4,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Container(
-                              alignment: Alignment.topCenter,
-                              child: Text(
-                                todo.title,
-                                style: const TextStyle(fontSize: 18),
+              child: GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => TodoDetailScreen(todo: todo),
+                    ),
+                  );
+                },
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(15),
+                  child: Container(
+                    color: Colors.white70,
+                    padding: const EdgeInsets.all(14),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
+                          flex: 4,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Container(
+                                alignment: Alignment.topCenter,
+                                child: Text(
+                                  todo.title,
+                                  style: const TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w600),
+                                ),
                               ),
-                            ),
-                            const SizedBox(height: 8),
-                            Container(
-                              alignment: Alignment.topLeft,
-                              child: Text(
-                                todo.description,
-                                overflow: TextOverflow.ellipsis,
-                                maxLines: 2,
+                              const SizedBox(height: 8),
+                              Container(
+                                alignment: Alignment.topLeft,
+                                child: Text(
+                                  todo.description,
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 2,
+                                ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
-                      ),
-                      Expanded(
-                        flex: 2,
-                        child: Column(
-                          children: [
-                            Container(
-                              alignment: Alignment.center,
-                              height: 40,
-                              child: Consumer<TodoProvider>(
-                                builder: (context, todoProvider, child) {
-                                  final selectedDate =
-                                      todoProvider.todos[index].date;
-                                  final now = DateTime.now();
-                                  final timeRemaining =
-                                      selectedDate.difference(now);
-                                  final days = timeRemaining.inDays;
+                        Expanded(
+                          flex: 2,
+                          child: Column(
+                            children: [
+                              Container(
+                                alignment: Alignment.center,
+                                height: 40,
+                                child: Consumer<TodoProvider>(
+                                  builder: (context, todoProvider, child) {
+                                    final selectedDate =
+                                        todoProvider.todos[index].date;
+                                    final now = DateTime.now();
+                                    final timeRemaining =
+                                        selectedDate.difference(now);
+                                    final days = timeRemaining.inDays;
 
-                                  final hours =
-                                      timeRemaining.inHours.remainder(24);
-                                  final minutes =
-                                      timeRemaining.inMinutes.remainder(60);
+                                    final hours =
+                                        timeRemaining.inHours.remainder(24);
+                                    final minutes =
+                                        timeRemaining.inMinutes.remainder(60);
 
-                                  return FittedBox(
-                                    fit: BoxFit.scaleDown,
-                                    child: Text(
-                                      ' $days D, $hours H, $minutes M',
-                                      style: const TextStyle(
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.w700),
+                                    return FittedBox(
+                                      fit: BoxFit.scaleDown,
+                                      child: Text(
+                                        ' $days D, $hours H, $minutes M',
+                                        style: const TextStyle(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.w700),
+                                      ),
+                                    );
+                                  },
+                                ),
+                              ),
+                              Row(
+                                children: [
+                                  Expanded(
+                                    child: Checkbox(
+                                      hoverColor: Colors.green,
+                                      value: todo.isChecked,
+                                      onChanged: (value) {
+                                        setState(() {
+                                          todo.isChecked = value!;
+                                        });
+                                      },
                                     ),
-                                  );
-                                },
+                                  ),
+                                  Expanded(
+                                    child: IconButton(
+                                      onPressed: () =>
+                                          todoProvider.deleteHandler(todo.id),
+                                      icon: const Icon(Icons.delete,
+                                          size: 40, color: Colors.red),
+                                    ),
+                                  ),
+                                ],
                               ),
-                            ),
-                            Row(
-                              children: [
-                                Expanded(
-                                  child: Checkbox(
-                                    hoverColor: Colors.green,
-                                    value: todo.isChecked,
-                                    onChanged: (value) {
-                                      setState(() {
-                                        todo.isChecked = value!;
-                                      });
-                                    },
-                                  ),
-                                ),
-                                Expanded(
-                                  child: IconButton(
-                                    onPressed: () =>
-                                        todoProvider.deleteHandler(todo.id),
-                                    icon: const Icon(Icons.delete,
-                                        size: 40, color: Colors.red),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               ),

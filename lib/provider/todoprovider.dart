@@ -7,9 +7,10 @@ class TodoProvider with ChangeNotifier {
   final List<ToDo> _todos = [];
 
   List<ToDo> get todos => _todos;
-
-  List<ToDo> get failedtodos => _todos
-      .where((element) => element.date.difference(DateTime.now()).isNegative)
+  List<ToDo> get ftodos => _todos
+      .where((element) =>
+          element.isChecked == false &&
+          element.date.difference(DateTime.now()).isNegative)
       .toList();
 
   void addToDoHandler(BuildContext context) {
@@ -24,7 +25,7 @@ class TodoProvider with ChangeNotifier {
       title: title,
       description: description,
     );
-    _todos.add(newTodo);
+    _todos.insert(0, newTodo);
     notifyListeners();
   }
 

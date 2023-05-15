@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:todo_project/screens/completedtodo.dart';
 import 'package:todo_project/screens/incompleted.dart';
+import 'package:todo_project/screens/mainui.dart';
 import 'package:todo_project/screens/settings.dart';
 
 import 'failedtocompleteintime.dart';
@@ -36,8 +37,41 @@ class DrawerForCompletedTask extends StatelessWidget {
             ),
           ),
           ListTile(
-            leading: const Icon(Icons.home),
-            title: const Text('Failed to Complete'),
+            leading: const Icon(
+              Icons.home,
+              color: Colors.white,
+              size: 32,
+            ),
+            title: const Text(
+              'Home',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 18,
+              ),
+            ),
+            onTap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => MainUi(
+                      context: context,
+                    ),
+                  ));
+            },
+          ),
+          ListTile(
+            leading: const Icon(
+              Icons.error,
+              color: Colors.red,
+              size: 32.0,
+            ),
+            title: const Text(
+              'Failed to Complete',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 18,
+              ),
+            ),
             onTap: () {
               Navigator.push(
                   context,
@@ -49,8 +83,18 @@ class DrawerForCompletedTask extends StatelessWidget {
             },
           ),
           ListTile(
-            leading: const Icon(Icons.settings),
-            title: const Text('Settings'),
+            leading: const Icon(
+              Icons.settings,
+              color: Colors.white,
+              size: 32,
+            ),
+            title: const Text(
+              'Settings',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 18,
+              ),
+            ),
             onTap: () {
               Navigator.push(
                   context,
@@ -60,8 +104,18 @@ class DrawerForCompletedTask extends StatelessWidget {
             },
           ),
           ListTile(
-            leading: const Icon(Icons.check_box),
-            title: const Text('Completed'),
+            leading: const Icon(
+              Icons.check_box,
+              color: Colors.white,
+              size: 32,
+            ),
+            title: const Text(
+              'Completed',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 18,
+              ),
+            ),
             onTap: () {
               Navigator.push(
                   context,
@@ -71,8 +125,18 @@ class DrawerForCompletedTask extends StatelessWidget {
             },
           ),
           ListTile(
-            leading: const Icon(Icons.check_box_outline_blank),
-            title: const Text('Incomplete'),
+            leading: const Icon(
+              Icons.check_box_outline_blank,
+              color: Colors.white,
+              size: 32,
+            ),
+            title: const Text(
+              'Incomplete',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 18,
+              ),
+            ),
             onTap: () {
               Navigator.push(
                   context,

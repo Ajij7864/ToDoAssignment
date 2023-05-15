@@ -87,7 +87,8 @@ class IncompletedToDoState extends State<IncompletedToDo> {
                                       selectedDate.difference(now);
                                   final days = timeRemaining.inDays;
 
-                                  final hours = timeRemaining.inHours;
+                                  final hours =
+                                      timeRemaining.inHours.remainder(24);
                                   final minutes =
                                       timeRemaining.inMinutes.remainder(60);
 
