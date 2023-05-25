@@ -9,7 +9,7 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  const MyApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +18,10 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         home: AnimatedSplashScreen(
-            splash: const Icon(Icons.home),
+            splash: const Icon(
+              Icons.home,
+              size: 60,
+            ),
             animationDuration: const Duration(seconds: 3),
             backgroundColor: Colors.purple,
             splashTransition: SplashTransition.fadeTransition,

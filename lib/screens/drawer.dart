@@ -2,14 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:todo_project/screens/completedtodo.dart';
 import 'package:todo_project/screens/incompleted.dart';
 import 'package:todo_project/screens/mainui.dart';
-import 'package:todo_project/screens/settings.dart';
-
-import 'failedtocompleteintime.dart';
+import 'package:todo_project/screens/search.dart';
+import 'package:todo_project/screens/failedtocompleteintime.dart';
 
 class DrawerForCompletedTask extends StatelessWidget {
   const DrawerForCompletedTask({
-    super.key,
-  });
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -50,13 +49,14 @@ class DrawerForCompletedTask extends StatelessWidget {
               ),
             ),
             onTap: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => MainUi(
-                      context: context,
-                    ),
-                  ));
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => MainUi(
+                    context: context,
+                  ),
+                ),
+              );
             },
           ),
           ListTile(
@@ -74,22 +74,23 @@ class DrawerForCompletedTask extends StatelessWidget {
             ),
             onTap: () {
               Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => FailedToDoScreen(
-                      context: context,
-                    ),
-                  ));
+                context,
+                MaterialPageRoute(
+                  builder: (context) => FailedToDoScreen(
+                    context: context,
+                  ),
+                ),
+              );
             },
           ),
           ListTile(
             leading: const Icon(
-              Icons.settings,
+              Icons.search,
               color: Colors.white,
               size: 32,
             ),
             title: const Text(
-              'Settings',
+              'Search',
               style: TextStyle(
                 color: Colors.white,
                 fontSize: 18,
@@ -97,10 +98,11 @@ class DrawerForCompletedTask extends StatelessWidget {
             ),
             onTap: () {
               Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const Settings(),
-                  ));
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const Search(),
+                ),
+              );
             },
           ),
           ListTile(
@@ -118,10 +120,11 @@ class DrawerForCompletedTask extends StatelessWidget {
             ),
             onTap: () {
               Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const CompletedToDo(),
-                  ));
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const CompletedToDo(),
+                ),
+              );
             },
           ),
           ListTile(
@@ -139,10 +142,11 @@ class DrawerForCompletedTask extends StatelessWidget {
             ),
             onTap: () {
               Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const IncompletedToDo(),
-                  ));
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const IncompletedToDo(),
+                ),
+              );
             },
           ),
         ],

@@ -133,17 +133,9 @@ class _FailedToDoScreenState extends State<FailedToDoScreen> {
                             ),
                             Row(
                               children: [
-                                Expanded(
-                                  child: Checkbox(
-                                    hoverColor: Colors.green,
-                                    value: todo.isChecked,
-                                    onChanged: (value) {
-                                      setState(() {
-                                        todo.isChecked = value!;
-                                      });
-                                    },
-                                  ),
-                                ),
+                                // TodoCheckbox(
+                                //   initialValue: todo.isChecked,
+                                // ),
                                 Expanded(
                                   child: IconButton(
                                     onPressed: () =>

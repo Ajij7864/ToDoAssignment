@@ -3,14 +3,22 @@ import 'package:provider/provider.dart';
 
 import '../provider/todoprovider.dart';
 
-class TodoDetailScreen extends StatelessWidget {
+class TodoDetailScreen extends StatefulWidget {
   // ignore: prefer_typing_uninitialized_variables
   final todo;
 
   const TodoDetailScreen({Key? key, required this.todo}) : super(key: key);
 
   @override
+  State<TodoDetailScreen> createState() => _TodoDetailScreenState();
+}
+
+class _TodoDetailScreenState extends State<TodoDetailScreen> {
+  @override
   Widget build(BuildContext context) {
+    final todoProvider = Provider.of<TodoProvider>(
+      context,
+    );
     return Scaffold(
       appBar: AppBar(
         title: const Text('ToDo destails Screen'),
@@ -29,29 +37,46 @@ class TodoDetailScreen extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Container(
-                    alignment: Alignment.center,
-                    height: 40,
-                    child: Consumer<TodoProvider>(
-                      builder: (context, todoProvider, child) {
-                        final selectedDate = todo.date;
-                        final now = DateTime.now();
-                        final timeRemaining = selectedDate.difference(now);
-                        final days = timeRemaining.inDays;
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Container(
+                        alignment: Alignment.center,
+                        height: 40,
+                        child: Consumer<TodoProvider>(
+                          builder: (context, todoProvider, child) {
+                            final selectedDate = widget.todo.date;
+                            final now = DateTime.now();
+                            final timeRemaining = selectedDate.difference(now);
+                            final days = timeRemaining.inDays;
 
-                        final hours = timeRemaining.inHours;
-                        final minutes = timeRemaining.inMinutes.remainder(60);
+                            final hours = timeRemaining.inHours;
+                            final minutes =
+                                timeRemaining.inMinutes.remainder(60);
 
-                        return Text(
-                          ' $days D, $hours H, $minutes M',
-                          style: const TextStyle(
-                              fontSize: 18, fontWeight: FontWeight.w700),
-                        );
-                      },
-                    ),
+                            return Text(
+                              ' $days D, $hours H, $minutes M',
+                              style: const TextStyle(
+                                  fontSize: 18, fontWeight: FontWeight.w700),
+                            );
+                          },
+                        ),
+                      ),
+                      // TodoCheckbox(
+                      //   initialValue: widget.todo.isChecked,
+                      // ),
+                      Expanded(
+                        child: IconButton(
+                          onPressed: () =>
+                              todoProvider.deleteHandler(widget.todo.id),
+                          icon: const Icon(Icons.delete,
+                              size: 40, color: Colors.red),
+                        ),
+                      ),
+                    ],
                   ),
                   Text(
-                    todo.title,
+                    widget.todo.title,
                     style: const TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 24.0,
@@ -59,7 +84,7 @@ class TodoDetailScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 16.0),
                   Text(
-                    todo.description,
+                    widget.todo.description,
                     style: const TextStyle(
                       fontSize: 18.0,
                     ),
