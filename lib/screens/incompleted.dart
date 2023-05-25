@@ -104,9 +104,15 @@ class IncompletedToDoState extends State<IncompletedToDo> {
                             ),
                             Row(
                               children: [
-                                // TodoCheckbox(
-                                //   initialValue: todo.isChecked,
-                                // ),
+                                Checkbox(
+                                  value: todo.isChecked,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      todoProvider.updateTodoHandler(
+                                          todo.id, value!);
+                                    });
+                                  },
+                                ),
                                 Expanded(
                                   child: IconButton(
                                     onPressed: () =>

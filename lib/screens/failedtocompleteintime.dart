@@ -133,9 +133,15 @@ class _FailedToDoScreenState extends State<FailedToDoScreen> {
                             ),
                             Row(
                               children: [
-                                // TodoCheckbox(
-                                //   initialValue: todo.isChecked,
-                                // ),
+                                Checkbox(
+                                  value: todo.isChecked,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      todoProvider.updateTodoHandler(
+                                          todo.id, value!);
+                                    });
+                                  },
+                                ),
                                 Expanded(
                                   child: IconButton(
                                     onPressed: () =>
