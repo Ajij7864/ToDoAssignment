@@ -4,7 +4,6 @@ import 'package:provider/provider.dart';
 import '../provider/todoprovider.dart';
 
 class TodoDetailScreen extends StatefulWidget {
-  // ignore: prefer_typing_uninitialized_variables
   final todo;
 
   const TodoDetailScreen({Key? key, required this.todo}) : super(key: key);
@@ -62,9 +61,15 @@ class _TodoDetailScreenState extends State<TodoDetailScreen> {
                           },
                         ),
                       ),
-                      // TodoCheckbox(
-                      //   initialValue: widget.todo.isChecked,
-                      // ),
+                      Checkbox(
+                        value: widget.todo.isChecked,
+                        onChanged: (value) {
+                          setState(() {
+                            todoProvider.updateTodoHandler(
+                                widget.todo.id, value!);
+                          });
+                        },
+                      ),
                       Expanded(
                         child: IconButton(
                           onPressed: () =>
