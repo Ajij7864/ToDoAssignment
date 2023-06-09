@@ -1,6 +1,4 @@
-import 'package:flutter/material.dart';
-
-import '../models/todolist.dart';
+part of 'widgets.dart';
 
 class TodoSearchDelegate extends SearchDelegate<String> {
   final List<ToDo> todos;

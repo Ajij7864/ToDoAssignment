@@ -1,8 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:google_sign_in/google_sign_in.dart';
-import 'package:todo_project/screens/login.dart';
-import 'package:todo_project/screens/mainui.dart';
+part of 'providers.dart';
 
 class AuthenticationProvider extends ChangeNotifier {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;

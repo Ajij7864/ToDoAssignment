@@ -1,12 +1,4 @@
-import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/material.dart';
-import 'package:hive_flutter/hive_flutter.dart';
-import 'package:provider/provider.dart';
-import 'package:todo_project/provider/authentication_provider.dart';
-import 'package:todo_project/screens/login.dart';
-import 'package:todo_project/provider/todoprovider.dart';
-
-import 'models/todolist.dart';
+import 'imports.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

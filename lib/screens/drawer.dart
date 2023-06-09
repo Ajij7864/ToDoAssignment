@@ -1,13 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:todo_project/screens/completedtodo.dart';
-import 'package:todo_project/screens/incompleted.dart';
-import 'package:todo_project/screens/login.dart';
-import 'package:todo_project/screens/mainui.dart';
-import 'package:todo_project/screens/search.dart';
-import 'package:todo_project/screens/failedtocompleteintime.dart';
-
-import '../provider/authentication_provider.dart';
+part of 'screens.dart';
 
 class DrawerForCompletedTask extends StatelessWidget {
   const DrawerForCompletedTask({
