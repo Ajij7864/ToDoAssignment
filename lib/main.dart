@@ -1,11 +1,28 @@
-import 'package:animated_splash_screen/animated_splash_screen.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
-import 'package:todo_project/screens/mainui.dart';
+import 'package:todo_project/provider/authentication_provider.dart';
+import 'package:todo_project/screens/login.dart';
 import 'package:todo_project/provider/todoprovider.dart';
 
-void main() {
-  runApp(const MyApp());
+import 'models/todolist.dart';
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  await Hive.initFlutter();
+  Hive.registerAdapter(ToDoAdapter());
+  await Hive.openBox('my_todo_box');
+
+  runApp(MultiProvider(providers: [
+    ChangeNotifierProvider(
+      create: (context) => TodoProvider(),
+    ),
+    ChangeNotifierProvider(
+      create: (context) => AuthenticationProvider(),
+    ),
+  ], child: const MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -13,20 +30,9 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (context) => TodoProvider(),
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        home: AnimatedSplashScreen(
-            splash: const Icon(
-              Icons.home,
-              size: 60,
-            ),
-            animationDuration: const Duration(seconds: 3),
-            backgroundColor: Colors.purple,
-            splashTransition: SplashTransition.fadeTransition,
-            nextScreen: MainUi(context: context)),
-      ),
+    return const MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: LoginScreen(),
     );
   }
 }

@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:todo_project/screens/completedtodo.dart';
 import 'package:todo_project/screens/incompleted.dart';
+import 'package:todo_project/screens/login.dart';
 import 'package:todo_project/screens/mainui.dart';
 import 'package:todo_project/screens/search.dart';
 import 'package:todo_project/screens/failedtocompleteintime.dart';
+
+import '../provider/authentication_provider.dart';
 
 class DrawerForCompletedTask extends StatelessWidget {
   const DrawerForCompletedTask({
@@ -12,6 +16,7 @@ class DrawerForCompletedTask extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final authProvider = Provider.of<AuthenticationProvider>(context);
     return Drawer(
       backgroundColor: const Color.fromARGB(255, 58, 24, 43),
       child: ListView(
@@ -145,6 +150,29 @@ class DrawerForCompletedTask extends StatelessWidget {
                 context,
                 MaterialPageRoute(
                   builder: (context) => const IncompletedToDo(),
+                ),
+              );
+            },
+          ),
+          ListTile(
+            leading: const Icon(
+              Icons.logout,
+              color: Colors.white,
+              size: 32,
+            ),
+            title: const Text(
+              'Log out',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 18,
+              ),
+            ),
+            onTap: () {
+              authProvider.signOut(context);
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const LoginScreen(),
                 ),
               );
             },

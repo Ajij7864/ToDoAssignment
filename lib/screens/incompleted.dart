@@ -34,7 +34,7 @@ class IncompletedToDoState extends State<IncompletedToDo> {
             direction: DismissDirection.endToStart,
             onDismissed: (direction) {
               if (direction == DismissDirection.endToStart) {
-                todoProvider.deleteHandler(todo.id);
+                todoProvider.deleteHandler(todo);
               }
             },
             child: GestureDetector(
@@ -80,8 +80,7 @@ class IncompletedToDoState extends State<IncompletedToDo> {
                               height: 40,
                               child: Consumer<TodoProvider>(
                                 builder: (context, todoProvider, child) {
-                                  final selectedDate =
-                                      todoProvider.todos[index].date;
+                                  final selectedDate = todo.date;
                                   final now = DateTime.now();
                                   final timeRemaining =
                                       selectedDate.difference(now);
@@ -92,12 +91,11 @@ class IncompletedToDoState extends State<IncompletedToDo> {
                                   final minutes =
                                       timeRemaining.inMinutes.remainder(60);
 
-                                  return FittedBox(
-                                    fit: BoxFit.scaleDown,
-                                    child: Text(
-                                      ' $days D, $hours H, $minutes M',
-                                      style: const TextStyle(fontSize: 18),
-                                    ),
+                                  return Text(
+                                    ' $days D, $hours H, $minutes M',
+                                    style: const TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.w700),
                                   );
                                 },
                               ),
@@ -116,7 +114,7 @@ class IncompletedToDoState extends State<IncompletedToDo> {
                                 Expanded(
                                   child: IconButton(
                                     onPressed: () =>
-                                        todoProvider.deleteHandler(todo.id),
+                                        todoProvider.deleteHandler(todo),
                                     icon: const Icon(Icons.delete,
                                         size: 40, color: Colors.red),
                                   ),

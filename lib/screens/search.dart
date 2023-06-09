@@ -54,7 +54,7 @@ class _SearchState extends State<Search> {
                 direction: DismissDirection.endToStart,
                 onDismissed: (direction) {
                   if (direction == DismissDirection.endToStart) {
-                    todoProvider.deleteHandler(todo.id);
+                    todoProvider.deleteHandler(todo);
                   }
                 },
                 child: GestureDetector(

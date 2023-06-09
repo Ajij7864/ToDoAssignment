@@ -1,8 +1,9 @@
-import 'dart:convert';
+// import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:todo_project/models/todolist.dart';
-import 'package:http/http.dart' as http;
+// import 'package:http/http.dart' as http;
 
 import '../widgets/datetimepicker.dart';
 
@@ -16,99 +17,135 @@ class TodoProvider with ChangeNotifier {
           element.isChecked == false &&
           element.date.difference(DateTime.now()).isNegative)
       .toList();
+
   void addToDoHandler(BuildContext context) {
     _showAddTodoModal(context);
     notifyListeners();
   }
 
-  void addTodoHandler(
-      String title, String description, DateTime selectedDate) async {
-    isLoading = true;
-    try {
-      final url =
-          Uri.parse('https://todo-fbcb7-default-rtdb.firebaseio.com/todo.json');
-      final response = await http.post(url,
-          body: json.encode({
-            'date': selectedDate.toIso8601String(),
-            'isChecked': false,
-            'title': title,
-            'description': description,
-          }));
+  void addTodo(title, description, selectedSDate) {
+    final todoBox = Hive.box('my_todo_box');
 
-      if (response.statusCode == 200) {
-        isLoading = false;
-        notifyListeners();
-        return;
-      }
-
-      final newTodo = ToDo(
-        date: selectedDate,
-        isChecked: false,
-        id: json.decode(response.body)['name'],
+    todoBox.add(
+      ToDo(
         title: title,
+        date: selectedDate,
         description: description,
-      );
-      _todos.insert(0, newTodo);
-      notifyListeners();
-    } catch (e) {
-      isLoading = false;
-      notifyListeners();
-      return;
-    }
-    isLoading = false;
+        id: DateTime.now().toString(),
+        isChecked: false,
+      ),
+    );
     notifyListeners();
   }
 
-  void updateTodoHandler(String id, bool newCheckedValue) async {
-    isLoading = true;
-    try {
-      final url = Uri.parse(
-          'https://todo-fbcb7-default-rtdb.firebaseio.com/todo/$id.json');
-      final response = await http.patch(
-        url,
-        body: json.encode({'isChecked': newCheckedValue}),
-      );
+  // void addTodoHandler(
+  //     String title, String description, DateTime selectedDate) async {
+  //   isLoading = true;
+  //   try {
+  //     final url =
+  //         Uri.parse('https://todo-fbcb7-default-rtdb.firebaseio.com/todo.json');
+  //     final response = await http.post(url,
+  //         body: json.encode({
+  //           'date': selectedDate.toIso8601String(),
+  //           'isChecked': false,
+  //           'title': title,
+  //           'description': description,
+  //         }));
 
-      if (response.statusCode == 200) {
-        final updatedTodoIndex = _todos.indexWhere((todo) => todo.id == id);
-        if (updatedTodoIndex >= 0) {
-          _todos[updatedTodoIndex].isChecked = newCheckedValue;
-          notifyListeners();
-        }
-        isLoading = false;
-        notifyListeners();
-        return;
-      }
-    } catch (e) {
-      isLoading = false;
-      notifyListeners();
-      return;
+  //     if (response.statusCode == 200) {
+  //       isLoading = false;
+  //       notifyListeners();
+  //       return;
+  //     }
+
+  //     final newTodo = ToDo(
+  //       date: selectedDate,
+  //       isChecked: false,
+  //       id: json.decode(response.body)['name'],
+  //       title: title,
+  //       description: description,
+  //     );
+  //     _todos.insert(0, newTodo);
+  //     notifyListeners();
+  //   } catch (e) {
+  //     isLoading = false;
+  //     notifyListeners();
+  //     return;
+  //   }
+  //   isLoading = false;
+  //   notifyListeners();
+  // }
+
+  // void updateTodoHandler(String id, bool newCheckedValue) async {
+  //   isLoading = true;
+  //   try {
+  //     final url = Uri.parse(
+  //         'https://todo-fbcb7-default-rtdb.firebaseio.com/todo/$id.json');
+  //     final response = await http.patch(
+  //       url,
+  //       body: json.encode({'isChecked': newCheckedValue}),
+  //     );
+
+  //     if (response.statusCode == 200) {
+  //       final updatedTodoIndex = _todos.indexWhere((todo) => todo.id == id);
+  //       if (updatedTodoIndex >= 0) {
+  //         _todos[updatedTodoIndex].isChecked = newCheckedValue;
+  //         notifyListeners();
+  //       }
+  //       isLoading = false;
+  //       notifyListeners();
+  //       return;
+  //     }
+  //   } catch (e) {
+  //     isLoading = false;
+  //     notifyListeners();
+  //     return;
+  //   }
+  //   isLoading = false;
+  //   notifyListeners();
+  // }
+
+  void updateTodoHandler(id, newCheckedVal) async {
+    final todoBox = Hive.box('my_todo_box');
+    final todoIndex =
+        todoBox.values.toList().indexWhere((todo) => todo.id == id.toString());
+
+    if (todoIndex != -1) {
+      final todo = todoBox.getAt(todoIndex) as ToDo;
+      todo.isChecked = newCheckedVal;
+      todo.save();
     }
-    isLoading = false;
     notifyListeners();
   }
 
-  Future<void> fetchSetData() async {
-    notifyListeners();
-    final url =
-        Uri.parse('https://todo-fbcb7-default-rtdb.firebaseio.com/todo.json');
-    final response = await http.get(url);
-    final extractedData = json.decode(response.body) as Map<String, dynamic>;
+  // Future<void> fetchSetData() async {
+  //   notifyListeners();
+  //   final url =
+  //       Uri.parse('https://todo-fbcb7-default-rtdb.firebaseio.com/todo.json');
+  //   final response = await http.get(url);
+  //   final extractedData = json.decode(response.body) as Map<String, dynamic>;
 
-    final List<ToDo> settodos = [];
+  //   final List<ToDo> settodos = [];
 
-    extractedData.forEach((key, value) {
-      settodos.insert(
-          0,
-          ToDo(
-            id: key,
-            title: value['title'],
-            description: value['description'],
-            isChecked: value['isChecked'],
-            date: DateTime.parse(value['date'] as String),
-          ));
-    });
-    _todos = settodos;
+  //   extractedData.forEach((key, value) {
+  //     settodos.insert(
+  //         0,
+  //         ToDo(
+  //           id: key,
+  //           title: value['title'],
+  //           description: value['description'],
+  //           isChecked: value['isChecked'],
+  //           date: DateTime.parse(value['date'] as String),
+  //         ));
+  //   });
+  //   _todos = settodos;
+  //   notifyListeners();
+  // }
+
+  void fetchSetData() {
+    final todoBox = Hive.box('my_todo_box');
+    final List<ToDo> fetchedTodos = todoBox.values.toList().cast<ToDo>();
+    _todos = fetchedTodos;
     notifyListeners();
   }
 
@@ -166,7 +203,7 @@ class TodoProvider with ChangeNotifier {
                       ElevatedButton(
                         onPressed: () {
                           if (title.isNotEmpty && description.isNotEmpty) {
-                            addTodoHandler(title, description, selectedDate);
+                            addTodo(title, description, selectedDate);
                             Navigator.pop(context);
                             selectedDate = DateTime.now();
                             notifyListeners();
@@ -185,15 +222,19 @@ class TodoProvider with ChangeNotifier {
     );
   }
 
-  void deleteHandler(String id) async {
-    isLoading = true;
-    final url = Uri.parse(
-        'https://todo-fbcb7-default-rtdb.firebaseio.com/todo/$id.json');
-    await http.delete(url);
-    _todos.removeWhere((element) => element.id == id);
-    isLoading = false;
-    notifyListeners();
+  void deleteHandler(todo) {
+    todo.delete();
   }
+
+  // void deleteHandler(String id) async {
+  //   isLoading = true;
+  //   final url = Uri.parse(
+  //       'https://todo-fbcb7-default-rtdb.firebaseio.com/todo/$id.json');
+  //   await http.delete(url);
+  //   _todos.removeWhere((element) => element.id == id);
+  //   isLoading = false;
+  //   notifyListeners();
+  // }
 
   DateTime selectedDate = DateTime.now();
 
@@ -228,14 +269,6 @@ class TodoProvider with ChangeNotifier {
       );
     }
 
-    notifyListeners();
-  }
-
-  void updateTodoCheckedStatus(bool isChecked, String id) {
-    final todo = _todos.firstWhere(
-      (todo) => todo.id == id,
-    );
-    todo.isChecked = isChecked;
     notifyListeners();
   }
 

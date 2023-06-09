@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import '../provider/todoprovider.dart';
 
 class TodoDetailScreen extends StatefulWidget {
-  final todo;
+  final dynamic todo;
 
   const TodoDetailScreen({Key? key, required this.todo}) : super(key: key);
 
@@ -49,7 +49,7 @@ class _TodoDetailScreenState extends State<TodoDetailScreen> {
                             final timeRemaining = selectedDate.difference(now);
                             final days = timeRemaining.inDays;
 
-                            final hours = timeRemaining.inHours;
+                            final hours = timeRemaining.inHours.remainder(24);
                             final minutes =
                                 timeRemaining.inMinutes.remainder(60);
 
@@ -73,7 +73,7 @@ class _TodoDetailScreenState extends State<TodoDetailScreen> {
                       Expanded(
                         child: IconButton(
                           onPressed: () =>
-                              todoProvider.deleteHandler(widget.todo.id),
+                              todoProvider.deleteHandler(widget.todo),
                           icon: const Icon(Icons.delete,
                               size: 40, color: Colors.red),
                         ),
