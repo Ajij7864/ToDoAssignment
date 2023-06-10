@@ -1,6 +1,4 @@
-import 'package:hive/hive.dart';
-import 'package:hive_flutter/hive_flutter.dart';
-
+import '../imports.dart';
 part 'todolist.g.dart';
 
 @HiveType(typeId: 1)

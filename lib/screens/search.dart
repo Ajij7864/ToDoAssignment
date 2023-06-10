@@ -1,8 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:todo_project/provider/todoprovider.dart';
-import 'package:todo_project/screens/tododetailsscreen.dart';
-import 'package:todo_project/widgets/searchdelegate.dart';
+part of 'screens.dart';
 
 class Search extends StatefulWidget {
   const Search({Key? key}) : super(key: key);
