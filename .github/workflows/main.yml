@@ -1,0 +1,40 @@
+name: Build and Release APKs
+
+on:
+  pull_request:
+    branches:
+      - main
+      - master
+  push:
+    branches:
+      - main
+      - master
+      - develop
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+
+    - name: Set up Flutter
+      uses: subosito/flutter-action@v2
+      with:
+        flutter-version: '3.10.2'  
+
+    - name: Build APK
+      run: flutter build apk --release
+    - name: Test APK
+      run: flutter test
+
+    - name: Upload APK
+      uses: actions/upload-artifact@v2
+      with:
+        name: release-apk
+        path: build/app/outputs/flutter-apk/app-release.apk
+        tag: v1.0.${{ github.run_number }}
+        token: ${{ secrets.TOKENTODO }}
+
