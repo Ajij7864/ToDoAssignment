@@ -1,7 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:todo_project/provider/todoprovider.dart';
-import 'package:todo_project/screens/tododetailsscreen.dart';
+part of 'screens.dart';
 
 class IncompletedToDo extends StatefulWidget {
   const IncompletedToDo({Key? key}) : super(key: key);

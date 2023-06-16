@@ -1,6 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:todo_project/provider/todoprovider.dart';
+part of 'screens.dart';
 
 class CompletedToDo extends StatefulWidget {
   const CompletedToDo({Key? key}) : super(key: key);
